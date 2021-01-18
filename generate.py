@@ -21,7 +21,7 @@ def generate():
     lstm = kl.LSTM(2, activation='tanh')(lin)
     model = Model(lin, lstm)
     x=[np.random.rand(2)]
-    for i in range(20): 
+    for i in range(100): 
         x.append( np.array(x[-1]) + model.predict(np.array(x)[np.newaxis])[0])
     x = np.array(x).tolist()
     return x
