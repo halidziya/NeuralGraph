@@ -1,8 +1,7 @@
-var the_last_data = [];
+var the_last_data = [[0,0]];
 var RESOLUTION = 512;
 function draw_last_data()
 {
-    var c = document.getElementById("drawing");
 
     var maxx=0;
     for (var i=0;i<the_last_data.length;i++)
@@ -24,20 +23,24 @@ function draw_last_data()
         if (the_last_data[i][1]<miny)
         miny=the_last_data[i][1];
 
-    for (var i=0;i<the_last_data.length-1;i++){
-        var ctx = c.getContext("2d");
-        console.log(RESOLUTION*(the_last_data[i][0]-minx)/(maxx-minx));
-        ctx.moveTo(RESOLUTION*(the_last_data[i][0]-minx)/(maxx-minx),  RESOLUTION*(the_last_data[i][1]-miny)/(maxy-miny));
-        ctx.lineTo(RESOLUTION*(the_last_data[i+1][0]-minx)/(maxx-minx), RESOLUTION*(the_last_data[i+1][1]-miny)/(maxy-miny));
-        ctx.stroke();
+    data = []
+    for (var i=0;i<the_last_data.length;i++){
+        data.push({x:RESOLUTION*(the_last_data[i][0]-minx)/(maxx-minx), y:RESOLUTION*(the_last_data[i][1]-miny)/(maxy-miny)});
     }
 
-    var ctx = document.getElementById('drawing').getContext('2d');
-    var myLineChart = new Chart(ctx, {
-        type: 'line',
-        data: data,
-        options: options
+    var chart = new CanvasJS.Chart("chartContainer", {
+        animationEnabled: true,
+        theme: "light2",
+        title:{
+            text: "Simple Line Chart"
+        },
+        data: [{        
+            type: "line",
+              indexLabelFontSize: 16,
+            dataPoints: data
+        }]
     });
+    chart.render();
 }
 
 function get_data(){
@@ -48,5 +51,6 @@ function get_data(){
     });
 }
 
-
-
+window.onload = function () {
+draw_last_data();
+}
